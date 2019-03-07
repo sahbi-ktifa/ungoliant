@@ -17,8 +17,9 @@ class CSSUngoliant(scrapy.Spider):
             
         yield {
             'keyword': extract_with_css('.document-title h1 ::text'),
-            'details': extract_with_css('article#wikiArticle > p'),
-            'experimental': 'true' if extract_with_css('article#wikiArticle .blockIndicator.experimental') != '' else 'false',
+            'details': extract_with_css('article#wikiArticle > p')
+                .replace('href="', 'target="_blank" href="https://developer.mozilla.org'),
+            'experimental': True if extract_with_css('article#wikiArticle .blockIndicator.experimental') != '' else False,
             'url': response.request.url,
             'tags': extract_with_css_to_list('.wiki-block .tags > li ::text'),
             'last-modified': extract_with_css('.wiki-block time::text'),
